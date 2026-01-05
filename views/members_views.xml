@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Tree View -->
+        <record id="view_library_member_tree" model="ir.ui.view">
+            <field name="name">library.member.tree</field>
+            <field name="model">library.member</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="email"/>
+                    <field name="phone"/>
+                    <field name="active_borrowings_count" widget="progressbar"/>
+                    <field name="created_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_library_member_form" model="ir.ui.view">
+            <field name="name">library.member.form</field>
+            <field name="model">library.member</field>
+            <field name="arch" type="xml">
+                <form string="Library Member">
+
+                     <header>
+                        <button name="%(action_quick_borrow_from_member)d" type="action"
+                                string="Quick Borrow" class="btn-success"/>
+                        <button name="action_view_borrowings" type="object"
+                                string="View Borrowings" class="btn-primary"/>
+                    </header>
+
+                    <header>
+                        <button name="action_view_borrowings" type="object"
+                                string="View Borrowings" class="btn-primary"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="email"/>
+                                <field name="phone"/>
+                            </group>
+                            <group>
+                                <field name="created_date"/>
+                                <field name="active_borrowings_count" readonly="1"/>
+                                <field name="total_borrowings_count" readonly="1"/>
+                                <h5>
+                                    <field name="active_borrowings_count" nolabel="1"/>
+                                    <span> Active Borrowings</span>
+                                </h5>
+                                <label for="total_borrowings_count"/>
+                                <h5>
+                                    <field name="total_borrowings_count" nolabel="1"/>
+                                    <span> Total Borrowings</span>
+                                </h5>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Borrowings">
+                                <field name="borrowing_ids" context="{'default_member_id': active_id}">
+                                    <tree>
+                                        <field name="book_id"/>
+                                        <field name="borrow_date"/>
+                                        <field name="due_date"/>
+                                        <field name="returned"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!--Action-->
+        <record id="action_library_member" model="ir.actions.act_window">
+            <field name="name">Members</field>
+            <field name="res_model">library.member</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_library_member"
+                  name="Members"
+                  parent="menu_library_root"
+                  action="action_library_member"/>
+
+    </data>
+</odoo>

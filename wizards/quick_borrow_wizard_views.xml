@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Quick Borrow Wizard Form -->
+        <record id="view_quick_borrow_wizard_form" model="ir.ui.view">
+            <field name="name">library.quick.borrow.wizard.form</field>
+            <field name="model">library.quick.borrow.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Quick Borrow">
+                    <sheet>
+                        <group>
+                            <group string="Borrowing Details">
+                                <field name="member_id" required="1"
+                                       context="{'search_default_active': 1}"/>
+                                <field name="book_id" required="1"
+                                       domain="[('status', '=', 'available')]"
+                                       context="{'search_default_available': 1}"/>
+                                <field name="due_date" required="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_confirm_borrow" string="Borrow Book" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action to open Quick Borrow Wizard -->
+        <record id="action_quick_borrow_wizard" model="ir.actions.act_window">
+            <field name="name">Quick Borrow</field>
+            <field name="res_model">library.quick.borrow.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'default_due_date': False}</field>
+        </record>
+
+        <!-- Action for Quick Borrow from Books -->
+        <record id="action_quick_borrow_from_book" model="ir.actions.act_window">
+            <field name="name">Quick Borrow This Book</field>
+            <field name="res_model">library.quick.borrow.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{
+                'default_book_id': active_id,
+                'from_book': True
+            }</field>
+            <field name="binding_model_id" ref="model_library_book"/>
+            <field name="binding_type">action</field>
+        </record>
+
+        <!-- Action for Quick Borrow from Members -->
+        <record id="action_quick_borrow_from_member" model="ir.actions.act_window">
+            <field name="name">Quick Borrow for This Member</field>
+            <field name="res_model">library.quick.borrow.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{
+                'default_member_id': active_id,
+                'from_member': True
+            }</field>
+            <field name="binding_model_id" ref="model_library_member"/>
+            <field name="binding_type">action</field>
+        </record>
+
+        <!-- Action for Quick Borrow from Dashboard -->
+        <record id="action_quick_borrow_standalone" model="ir.actions.act_window">
+            <field name="name">Quick Borrow</field>
+            <field name="res_model">library.quick.borrow.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

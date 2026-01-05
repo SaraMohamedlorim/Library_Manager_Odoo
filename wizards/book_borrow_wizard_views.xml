@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_book_borrow_wizard_form" model="ir.ui.view">
+            <field name="name">library.book.borrow.wizard.form</field>
+            <field name="model">library.book.borrow.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Borrow Books">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="member_id" required="1"/>
+                                <field name="borrow_date"/>
+                                <field name="due_date"/>
+                            </group>
+                            <group>
+                                <field name="book_ids" domain="[('status', '=', 'available')]"
+                                       context="{'tree_view_ref': 'library_manager.view_library_book_tree'}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="notes"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_borrow_books" string="Borrow Books" type="object" class="btn-primary"/>
+                        <button name="action_open_member_form" string="New Member" type="object" class="btn-secondary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_book_borrow_wizard" model="ir.actions.act_window">
+            <field name="name">Borrow Books</field>
+            <field name="res_model">library.book.borrow.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="model_library_book"/>
+            <field name="binding_type">action</field>
+        </record>
+    </data>
+</odoo>

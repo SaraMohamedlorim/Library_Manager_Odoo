@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_library_user_book,library.book,model_library_book,base.group_user,1,1,1,1
+access_library_user_member,library.member,model_library_member,base.group_user,1,1,1,1
+access_library_user_borrowing,library.borrowing,model_library_borrowing,base.group_user,1,1,1,1
+access_library_manager_book,library.book,model_library_book,base.group_system,1,1,1,1
+access_library_manager_member,library.member,model_library_member,base.group_system,1,1,1,1
+access_library_manager_borrowing,library.borrowing,model_library_borrowing,base.group_system,1,1,1,1
+access_library_wizard_borrow,library.book.borrow.wizard,model_library_book_borrow_wizard,base.group_user,1,1,1,1
+access_library_wizard_return,library.book.return.wizard,model_library_book_return_wizard,base.group_user,1,1,1,1
+access_library_wizard_report,library.report.wizard,model_library_report_wizard,base.group_user,1,1,1,1
+access_library_wizard_mass,library.mass.operation.wizard,model_library_mass_operation_wizard,base.group_system,1,1,1,1
+access_library_quick_borrow_wizard,library.quick.borrow.wizard,model_library_quick_borrow_wizard,,1,1,1,1

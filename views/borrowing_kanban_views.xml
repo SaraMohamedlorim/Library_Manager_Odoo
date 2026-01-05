@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Kanban View for Borrowings grouped by Member -->
+        <record id="view_library_borrowing_kanban" model="ir.ui.view">
+            <field name="name">library.borrowing.kanban</field>
+            <field name="model">library.borrowing</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="member_id">
+                    <field name="member_id"/>
+                    <field name="book_id"/>
+                    <field name="borrow_date"/>
+                    <field name="due_date"/>
+                    <field name="returned"/>
+                    <field name="is_overdue"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_kanban_record" t-attf-class="oe_kanban_global_click o_kanban_record #{record.is_overdue.raw_value ? 'o_kanban_record_overdue' : ''}">
+                                <div class="o_kanban_details">
+                                    <strong>
+                                        <field name="book_id"/>
+                                    </strong>
+                                    <div>
+                                        <span>Borrowed: </span>
+                                        <field name="borrow_date"/>
+                                    </div>
+                                    <div>
+                                        <span>Due: </span>
+                                        <field name="due_date"/>
+                                    </div>
+                                    <div t-if="record.returned.raw_value">
+                                        <span class="text-success">✓ Returned</span>
+                                    </div>
+                                    <div t-elif="record.is_overdue.raw_value">
+                                        <span class="text-danger">⚠ Overdue</span>
+                                    </div>
+                                    <div t-else="">
+                                        <span class="text-warning">● Active</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Additional Action for Borrowings Kanban -->
+        <record id="action_library_borrowing_kanban" model="ir.actions.act_window">
+            <field name="name">Borrowings by Member</field>
+            <field name="res_model">library.borrowing</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_id" ref="view_library_borrowing_kanban"/>
+            <field name="search_view_id" ref="view_library_borrowing_search"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Library Dashboard Form View -->
+        <record id="view_library_dashboard_form" model="ir.ui.view">
+            <field name="name">library.dashboard.form</field>
+            <field name="model">library.dashboard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button string="Refresh" type="object" name="refresh_dashboard" class="btn-primary"/>
+                    </header>
+
+                    <sheet>
+                        <div class="o_dashboard">
+                            <div class="o_dashboard_card">
+                                <h3><field name="total_books" readonly="1"/></h3>
+                                <span>Total Books</span>
+                            </div>
+
+                            <div class="o_dashboard_card">
+                                <h3><field name="available_books" readonly="1"/></h3>
+                                <span>Available Books</span>
+                            </div>
+
+                            <div class="o_dashboard_card">
+                                <h3><field name="borrowed_books" readonly="1"/></h3>
+                                <span>Borrowed Books</span>
+                            </div>
+
+                            <div class="o_dashboard_card">
+                                <h3><field name="total_members" readonly="1"/></h3>
+                                <span>Total Members</span>
+                            </div>
+
+                            <div class="o_dashboard_card">
+                                <h3><field name="active_borrowings" readonly="1"/></h3>
+                                <span>Active Borrowings</span>
+                            </div>
+
+                            <div class="o_dashboard_card">
+                                <h3><field name="overdue_borrowings" readonly="1"/></h3>
+                                <span>Overdue Borrowings</span>
+                            </div>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action to open the dashboard -->
+        <record id="action_library_dashboard" model="ir.actions.act_window">
+            <field name="name">Library Dashboard</field>
+            <field name="res_model">library.dashboard</field>
+            <field name="view_mode">form</field>
+            <field name="target">current</field>
+        </record>
+
+        <menuitem id="menu_library_root" name="Library Management" sequence="0"/>
+
+        <!-- Menu item -->
+        <menuitem id="menu_library_dashboard"
+                  name="Dashboard"
+                  parent="menu_library_root"
+                  action="action_library_dashboard"
+                  sequence="1"/>
+    </data>
+</odoo>

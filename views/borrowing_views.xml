@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Tree View -->
+        <record id="view_library_borrowing_tree" model="ir.ui.view">
+            <field name="name">library.borrowing.tree</field>
+            <field name="model">library.borrowing</field>
+            <field name="arch" type="xml">
+                <tree decoration-danger="is_overdue" decoration-warning="returned">
+
+                    <field name="member_id"/>
+                    <field name="book_id"/>
+                    <field name="borrow_date"/>
+                    <field name="due_date"/>
+                    <field name="price"/>
+                    <field name="amount"/>
+                    <!-- <field name="expense_id"/> -->
+                    <field name="returned"/>
+                    <field name="return_date"/>
+                    <field name="is_overdue"/>
+                    <field name="days_overdue"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_library_borrowing_form" model="ir.ui.view">
+            <field name="name">library.borrowing.form</field>
+            <field name="model">library.borrowing</field>
+            <field name="arch" type="xml">
+                <form> 
+
+                    <header>
+                        <button name="%(action_quick_borrow_standalone)d"
+                                string="Quick Borrow"
+                                type="action"
+                                class="btn-primary"/>
+                    </header>
+                    <header>
+                        <button name="action_return_book" type="object"
+                                string="Return Book" class="btn-primary"
+                                attrs="{'invisible': [('returned', '=', True)]}"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="member_id"/>
+                                <field name="book_id"/>
+                            </group>
+                            <group>
+                                <field name="borrow_date"/>
+                                <field name="due_date"/>
+<!--                                <field name="returned"/>-->
+<!--                                <field name="return_date"/>-->
+                            </group>
+                        </group>
+
+
+                         <group>
+                            <group>
+                                <field name="price" readonly="1"/>
+                                <field name="amount" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="expense_id" readonly="1"/>
+                            </group>
+                        </group>
+
+
+                        <group>
+                            <field name="returned"/>
+                            <field name="return_date" readonly="1"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="is_overdue" readonly="1"/>
+                                <field name="days_overdue" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="view_library_borrowing_search" model="ir.ui.view">
+            <field name="name">library.borrowing.search</field>
+            <field name="model">library.borrowing</field>
+            <field name="arch" type="xml">
+                <search string="Search Borrowings">
+                    <field name="member_id"/>
+                    <field name="book_id"/>
+                    <filter string="Active" name="active" domain="[('returned','=',False)]"/>
+                    <filter string="Overdue" name="overdue" domain="[('is_overdue','=',True)]"/>
+                    <filter string="Returned" name="returned" domain="[('returned','=',True)]"/>
+                </search>
+            </field>
+        </record>
+
+        <!--Acton-->
+        <record id="action_library_borrowing" model="ir.actions.act_window">
+            <field name="name">Borrowings</field>
+            <field name="res_model">library.borrowing</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_library_borrowing"
+                  name="Borrowings"
+                  parent="menu_library_root"
+                  action="action_library_borrowing"/>
+    </data>
+</odoo>

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Tree View -->
+        <record id="view_library_book_tree" model="ir.ui.view">
+            <field name="name">library.book.tree</field>
+            <field name="model">library.book</field>
+            <field name="arch" type="xml">
+                <tree decoration-success="is_available" decoration-danger="status=='checked_out'">
+                    <field name="name"/>
+                    <field name="author"/>
+                    <field name="status"/>
+                    <field name="rating"/>
+                    <field name="borrow_price"/>
+                    <field name="active_borrowers_count" widget="statinfo" string="Active Borrowers"/>
+                    <field name="total_borrowings" widget="progressbar" string="Total Borrowings"/>
+                    <field name="added_date"/>
+                    <field name="is_available" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_library_book_form" model="ir.ui.view">
+            <field name="name">library.book.form</field>
+            <field name="model">library.book</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+
+                         <!-- Smart Buttons -->
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_borrowers" type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-users">
+                                <field name="active_borrowers_count" string="Active Borrowers"
+                                       widget="statinfo" options="{'integer_field': 'active_borrowers_count'}"/>
+                                <span class="o_stat_text">Active Borrowers</span>
+                            </button>
+                            <button name="action_view_borrowing_history" type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-history">
+                                <field name="total_borrowings" string="Total Borrowings"
+                                       widget="statinfo" options="{'integer_field': 'total_borrowings'}"/>
+                                <span class="o_stat_text">Borrowing History</span>
+                            </button>
+                        </div>
+
+                        <!--action Buttons-->
+
+                         <!-- Action Buttons -->
+                        <button name="%(action_quick_borrow_from_book)d" type="action"
+                                string="Quick Borrow" class="btn-success"
+                                attrs="{'invisible': [('status', '!=', 'available')]}"/>
+                        <button name="action_mark_available" type="object"
+                                string="Mark Available" class="btn-primary"
+                                attrs="{'invisible': [('status', '=', 'available')]}"/>
+                        <button name="action_mark_checked_out" type="object"
+                                string="Mark Checked Out" class="btn-secondary"
+                                attrs="{'invisible': [('status', '=', 'checked_out')]}"/>
+<!--                         <button name="action_quick_borrow" type="object"-->
+<!--                                string="Quick Borrow" class="btn-success"-->
+<!--                                attrs="{'invisible': [('status', '!=', 'available')]}"/>-->
+
+                        <field name="status" widget="statusbar" statusbar_visible="available,checked_out,maintenance"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="author"/>
+                                <field name="isbn"/>
+                                <field name="borrow_price"/> 
+                            </group>
+                            <group>
+                                <field name="status"/>
+                                <field name="rating"/>
+                                <field name="added_date"/>
+                            </group>
+                        </group>
+
+
+                         <group>
+                            <field name="current_borrowing_id" readonly="1"/>
+                        </group>
+
+
+                         <!-- Current Borrowers -->
+                        <group string="Current Borrowers" attrs="{'invisible': [('active_borrowers_count', '=', 0)]}">
+                            <field name="current_borrower_ids" widget="many2many_tags" readonly="1"/>
+                        </group>
+
+
+                        <group>
+                            <field name="notes" nolabel="1"/>
+                        </group>
+
+                         <notebook>
+                            <page string="Borrowing History">
+                                <field name="borrowing_ids">
+                                    <tree>
+                                        <field name="member_id"/>
+                                        <field name="borrow_date"/>
+                                        <field name="due_date"/>
+                                        <field name="returned"/>
+                                        <field name="return_date"/>
+                                    </tree>
+                                </field>
+                            </page>
+
+                             <page string="Additional Information">
+                                <group>
+                                    <group>
+                                        <field name="publisher"/>
+                                        <field name="publication_year"/>
+                                        <field name="edition"/>
+                                    </group>
+                                    <group>
+                                        <field name="pages"/>
+                                        <field name="language"/>
+                                        <field name="popularity_score" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+
+                        </notebook>
+
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="view_library_book_search" model="ir.ui.view">
+            <field name="name">library.book.search</field>
+            <field name="model">library.book</field>
+            <field name="arch" type="xml">
+                <search string="Search Books">
+                    <field name="name"/>
+                    <field name="author"/>
+                    <field name="isbn"/>
+                    <filter string="Available" name="available" domain="[('status','=','available')]"/>
+                    <filter string="Borrowed" name="checked_out" domain="[('status','=','checked_out')]"/>
+                    <filter string="Popular Books" name="popular" domain="[('total_borrowings','>',5)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Status" name="group_by_status" context="{'group_by': 'status'}"/>
+                        <filter string="Rating" name="group_by_rating" context="{'group_by': 'rating'}"/>
+                        <filter string="Added Date" name="group_by_added_date" context="{'group_by': 'added_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Kanban View -->
+        <record id="view_library_book_kanban" model="ir.ui.view">
+            <field name="name">library.book.kanban</field>
+            <field name="model">library.book</field>
+            <field name="arch" type="xml">
+                 <kanban default_group_by="status">
+                    <field name="name"/>
+                    <field name="status"/>
+                    <field name="rating"/>
+                    <field name="active_borrowers_count"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_kanban_record">
+                                <div class="o_kanban_image">
+                                    <span class="fa fa-book fa-2x"/>
+                                </div>
+                                <div class="o_kanban_details">
+                                    <strong><field name="name"/></strong>
+                                    <div><field name="author"/></div>
+                                    <div t-if="record.rating.raw_value">
+                                        Rating: <field name="rating"/>
+                                    </div>
+                                    <div>Status: <field name="status"/></div>
+                                    <div t-if="record.active_borrowers_count.raw_value > 0">
+                                        <small>Active Borrowers: <field name="active_borrowers_count"/></small>
+                                    </div>
+                                      <div t-if="record.status.raw_value == 'available'">
+                                         <button type="action"
+                                        name="%(action_quick_borrow_from_book)d"
+                                        string="Quick Borrow"
+                                        class="btn btn-sm btn-success"
+                                        attrs="{'invisible': [('status', '!=', 'available')]}"/>
+                                       </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!--Action-->
+        <record id="action_library_book" model="ir.actions.act_window">
+            <field name="name">Books</field>
+            <field name="res_model">library.book</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add new books to the library collection.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_library_root" name="Library"/>
+        <menuitem id="menu_library_book" name="Books"
+                  parent="menu_library_root" action="action_library_book"/>
+    </data>
+</odoo>

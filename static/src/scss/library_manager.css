@@ -1,0 +1,98 @@
+/* Library Manager Custom Styles */
+.o_library_dashboard {
+    padding: 20px;
+}
+
+.o_dashboard_card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+    border-left: 4px solid #4caf50;
+}
+
+.o_dashboard_card h3 {
+    margin: 0;
+    font-size: 24px;
+    color: #4caf50;
+}
+
+.o_dashboard_card.overdue {
+    border-left-color: #f44336;
+}
+
+.o_dashboard_card.overdue h3 {
+    color: #f44336;
+}
+
+.o_dashboard_card.warning {
+    border-left-color: #ff9800;
+}
+
+.o_dashboard_card.warning h3 {
+    color: #ff9800;
+}
+
+/* Book status colors */
+.o_book_available {
+    color: #4caf50;
+    font-weight: bold;
+}
+
+.o_book_borrowed {
+    color: #f44336;
+    font-weight: bold;
+}
+
+.o_book_maintenance {
+    color: #ff9800;
+    font-weight: bold;
+}
+
+/* Smart button styles */
+.oe_stat_button .o_stat_info .o_stat_value {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.oe_stat_button .o_stat_info .o_stat_text {
+    font-size: 0.9em;
+}
+
+/* Kanban styles for borrowings */
+.o_kanban_record_overdue {
+    border-left: 4px solid #f44336;
+    background-color: #ffebee;
+}
+
+.o_kanban_record_returned {
+    border-left: 4px solid #4caf50;
+    background-color: #e8f5e8;
+}
+
+/* Quick action buttons */
+.o_quick_borrow_btn {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.o_quick_return_btn {
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+/* Tags for current borrowers */
+.o_tag_current_borrower {
+    background-color: #4caf50;
+    color: white;
+}

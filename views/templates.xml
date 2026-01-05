@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Website Page Template: List of Books -->
+    <template id="library_books_page" name="Library Books Page">
+        <t t-call="web.layout">
+            <div class="container mt-5 mb-5">
+                <h1 class="text-center mb-4">📚 Library Books</h1>
+                <t t-if="books">
+                    <div class="row">
+                        <t t-foreach="books" t-as="book">
+                            <div class="col-md-4 mb-4">
+                                <div class="card shadow-sm p-3" style="min-height: 220px;">
+                                    <h4><t t-esc="book.name"/></h4>
+                                    <p><strong>Author:</strong> <t t-esc="book.author"/></p>
+                                    <p><strong>Status:</strong>
+                                        <t t-esc="book.status.capitalize()"/>
+                                    </p>
+                                    <p><strong>Rating:</strong>
+                                        <t t-esc="book.rating or 'N/A'"/>
+                                    </p>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+                <t t-if="not books">
+                    <p>No books found in the library.</p>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <!-- Website Route -->
+    <record id="library_books_page_route" model="ir.ui.view">
+        <field name="name">library.books.page.route</field>
+        <field name="type">qweb</field>
+        <field name="arch" type="xml">
+            <t t-name="library.books.page.route"/>
+        </field>
+    </record>
+</odoo>

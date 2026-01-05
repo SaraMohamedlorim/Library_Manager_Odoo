@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form View for Mass Operation Wizard -->
+        <record id="view_mass_operation_wizard_form" model="ir.ui.view">
+            <field name="name">library.mass.operation.wizard.form</field>
+            <field name="model">library.mass.operation.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Mass Operations">
+                    <sheet>
+                        <group>
+                            <group string="Operation Settings">
+                                <field name="operation_type" required="1"/>
+
+                                <!-- Show only when changing status -->
+                                <field name="new_status"
+                                       attrs="{'invisible': [('operation_type', '!=', 'change_status')],
+                                               'required': [('operation_type', '=', 'change_status')]}"/>
+
+                                <!-- Show only when updating rating -->
+                                <field name="new_rating"
+                                       attrs="{'invisible': [('operation_type', '!=', 'update_rating')],
+                                               'required': [('operation_type', '=', 'update_rating')]}"/>
+
+                                <!-- Show only when sending reminders -->
+                                <field name="reminder_type"
+                                       attrs="{'invisible': [('operation_type', '!=', 'send_reminder')],
+                                               'required': [('operation_type', '=', 'send_reminder')]}"/>
+                            </group>
+
+                            <group string="Target Selection">
+                                <!-- Show books selection for status/rating operations -->
+                                <field name="book_ids"
+                                       attrs="{'invisible': [('operation_type', '=', 'send_reminder')]}"
+                                       context="{'tree_view_ref': 'library_manager.view_library_book_tree'}"
+                                       string="Select Books"/>
+
+                                <!-- Show members selection for reminder operation -->
+                                <field name="member_ids"
+                                       attrs="{'invisible': [('operation_type', '!=', 'send_reminder')]}"
+                                       context="{'tree_view_ref': 'library_manager.view_library_member_tree'}"
+                                       string="Select Members"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_execute_operation" string="Execute Operation" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action to open the Mass Operation Wizard -->
+        <record id="action_mass_operation_wizard" model="ir.actions.act_window">
+            <field name="name">Mass Operations</field>
+            <field name="res_model">library.mass.operation.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'default_operation_type': 'change_status'}</field>
+        </record>
+
+        <!-- Add to Books menu -->
+        <menuitem id="menu_mass_operations"
+                  name="Mass Operations"
+                  parent="menu_library_main"
+                  action="action_mass_operation_wizard"
+                  sequence="60"/>
+    </data>
+</odoo>

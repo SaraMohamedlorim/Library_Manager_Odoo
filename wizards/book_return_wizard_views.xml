@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_book_return_wizard_form" model="ir.ui.view">
+            <field name="name">library.book.return.wizard.form</field>
+            <field name="model">library.book.return.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Return Books">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="member_id"/>
+                                <field name="return_date"/>
+                                <field name="apply_fine"/>
+                            </group>
+                            <group>
+                                <field name="fine_amount" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="borrowing_ids"
+                                   context="{'tree_view_ref': 'library_manager.view_library_borrowing_tree'}"/>
+                        </group>
+                        <group>
+                            <field name="notes"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_return_books" string="Return Books" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_book_return_wizard" model="ir.actions.act_window">
+            <field name="name">Return Books</field>
+            <field name="res_model">library.book.return.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="model_library_member"/>
+            <field name="binding_type">action</field>
+        </record>
+    </data>
+</odoo>
